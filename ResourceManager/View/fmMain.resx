@@ -159,13 +159,13 @@
     <value>106, 5</value>
   </data>
   <data name="lbHeader.Size" type="System.Drawing.Size, System.Drawing">
-    <value>291, 16</value>
+    <value>232, 16</value>
   </data>
   <data name="lbHeader.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="lbHeader.Text" xml:space="preserve">
-    <value>Менеджер управления ресурсами приложений</value>
+    <value>Менеджер управления ресурсами</value>
   </data>
   <data name="&gt;&gt;lbHeader.Name" xml:space="preserve">
     <value>lbHeader</value>
@@ -204,7 +204,7 @@
     <value>3</value>
   </data>
   <data name="lbDescription.Text" xml:space="preserve">
-    <value>Утилита предназначена для изменения отображаемого текста в программе.</value>
+    <value>Данная утилита предназначена для изменения отображаемого пользователю текста</value>
   </data>
   <data name="&gt;&gt;lbDescription.Name" xml:space="preserve">
     <value>lbDescription</value>

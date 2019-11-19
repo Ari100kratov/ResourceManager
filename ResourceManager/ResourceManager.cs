@@ -42,8 +42,8 @@ namespace ResourceManager
         /// Путь к библиотеке ресурсов с учетом локализации
         /// </summary>
         public string LibraryFullPath => Path.Combine(this.ProjectPath
-            , this.CurrentSourceEnum == SourceEnum.Client 
-            ? this.RESOURCE_CLIENT_DEFAULT_PATH 
+            , this.CurrentSourceEnum == SourceEnum.Client
+            ? this.RESOURCE_CLIENT_DEFAULT_PATH
             : this.RESOURCE_SERVER_DEFAULT_PATH
             , this.Language);
 
@@ -55,8 +55,8 @@ namespace ResourceManager
             get
             {
                 //TODO: Переделать, чтобы пользователь мог положить в папку с программой - тогда берем дефолтный путь
-                return string.IsNullOrWhiteSpace(Settings.Default.ProjectPath) 
-                    ? "C:\\industry" 
+                return string.IsNullOrWhiteSpace(Settings.Default.ProjectPath)
+                    ? "C:\\industry"
                     : Settings.Default.ProjectPath;
             }
             set
@@ -172,14 +172,11 @@ namespace ResourceManager
         /// <param name="libraryPath">Путь к месторасположению библиотеки</param>
         private void FillAssemblyModule(string libraryPath)
         {
-            if (string.IsNullOrWhiteSpace(libraryPath))
-            {
-                this._assemblyModule = null;
-                return;
-            }
-
             //Освобождаем ресурсы перед заполнением
             this._assemblyModule?.Dispose();
+
+            if (libraryPath == null || string.IsNullOrWhiteSpace(libraryPath))
+                return;
 
             //Заполняем ресурсы библиотеке
             this._assemblyModule = AssemblyDefinition.ReadAssembly(libraryPath, new ReaderParameters { ReadWrite = true });
@@ -206,7 +203,7 @@ namespace ResourceManager
         {
             this._resourceItemList?.Clear();
 
-            if (string.IsNullOrWhiteSpace(resourceName))
+            if (resourceName == null || string.IsNullOrWhiteSpace(resourceName))
                 return;
 
             //Получаем ресурс
