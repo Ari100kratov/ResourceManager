@@ -1,5 +1,5 @@
 ﻿
-namespace ResourceManager
+namespace ResourceManager.Model
 {
     /// <summary>
     /// Элемент ресурса

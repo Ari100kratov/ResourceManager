@@ -4,11 +4,20 @@ using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using System.IO;
+using ResourceManager.Enums;
+using ResourceManager.Model;
+using ResourceManager.View;
+using ResourceManager.Presenter;
 
 namespace ResourceManager
 {
-    public partial class fmMain : XtraForm
+    public partial class fmMain : XtraForm, IMainView
     {
+        public MainPresenter Presenter { set => throw new NotImplementedException(); }
+        public string SelectedLibrary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string SelectedResource { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public SourceEnum SelectedSourceEnum { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IList<ResourceItem> ResourceItemList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         #region .ctor
 
         /// <summary>
@@ -18,7 +27,13 @@ namespace ResourceManager
         {
             InitializeComponent();
 
+            this.slueLibrary.EditValueChanged += this.SelectedLibraryChanged;
         }
+
+        public event EventHandler SelectedLibraryChanged;
+        public event EventHandler SelectedResourceChanged;
+        public event EventHandler SelectedSourceEnumChanged;
+        public event EventHandler SaveChanges;
 
         #endregion
 
@@ -97,36 +112,8 @@ namespace ResourceManager
 
         #endregion
 
-        #region Fields
-
-        /// <summary>
-        /// Экземпляр менеджера ресурсов
-        /// </summary>
-        IResourceManager _resourceManager = new ResourceManager();
-
-        /// <summary>
-        /// Список элементов ресурса
-        /// </summary>
-        private List<ResourceItem> _resourceItemList = new List<ResourceItem>();
-
-        #endregion
-
         #region Properties
 
-        /// <summary>
-        /// Выбранная библиотека
-        /// </summary>
-        private string SelectedLibrary => this.slueLibrary.EditValue?.ToString();
-
-        /// <summary>
-        /// Выбранный ресурс
-        /// </summary>
-        private string SelectedResource => this.slueResource.EditValue?.ToString();
-
-        /// <summary>
-        /// Выбранный источник
-        /// </summary>
-        private SourceEnum SelectedSourceEnum => (SourceEnum)this.lueSource.EditValue;
 
         #endregion
 

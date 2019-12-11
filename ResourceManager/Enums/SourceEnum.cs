@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ResourceManager
+namespace ResourceManager.Enums
 {
     /// <summary>
     /// Перечесление источника данных
