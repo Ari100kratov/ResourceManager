@@ -13,11 +13,56 @@ namespace ResourceManager
 {
     public partial class fmMain : XtraForm, IMainView
     {
-        public MainPresenter Presenter { set => throw new NotImplementedException(); }
-        public string SelectedLibrary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string SelectedResource { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public SourceEnum SelectedSourceEnum { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IList<ResourceItem> ResourceItemList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string SelectedLibrary
+        {
+            get => this.slueLibrary.EditValue.ToString();
+            set => this.slueLibrary.EditValue = value;
+        }
+
+        public string SelectedResource
+        {
+            get => this.slueResource.EditValue.ToString();
+            set => this.slueResource.EditValue = value;
+        }
+
+        public string SelectedPath
+        {
+            get => this.bePath.EditValue.ToString();
+            set => this.bePath.EditValue = value;
+        }
+
+        public SourceEnum SelectedSourceEnum
+        {
+            get => (SourceEnum)this.lueSource.EditValue;
+            set => this.slueResource.EditValue = (int)value;
+        }
+
+        public IList<ResourceItem> ResourceItemList
+        {
+            get => this.gcResourceItems.DataSource as List<ResourceItem>;
+            set => this.gcResourceItems.DataSource = value;
+        }
+
+        public IList<string> LibraryList
+        {
+            get => this.slueLibrary.Properties.DataSource as List<string>;
+            set => this.slueLibrary.Properties.DataSource = value;
+        }
+
+        public IList<string> ResourceList
+        {
+            get => this.slueResource.Properties.DataSource as List<string>;
+            set => this.slueResource.Properties.DataSource = value;
+        }
+
+        public Dictionary<int, string> SourceEnumDict
+        {
+            get => this.lueSource.Properties.DataSource as Dictionary<int, string>;
+            set => this.lueSource.Properties.DataSource = value;
+        }
+
+        private readonly IMainPresenter _presenter;
+
         #region .ctor
 
         /// <summary>
@@ -26,14 +71,9 @@ namespace ResourceManager
         public fmMain()
         {
             InitializeComponent();
-
-            this.slueLibrary.EditValueChanged += this.SelectedLibraryChanged;
+            var resourceManager = new ResourceManager.Model.ResourceManager();
+            this._presenter = new MainPresenter(this, resourceManager);
         }
-
-        public event EventHandler SelectedLibraryChanged;
-        public event EventHandler SelectedResourceChanged;
-        public event EventHandler SelectedSourceEnumChanged;
-        public event EventHandler SaveChanges;
 
         #endregion
 
@@ -112,22 +152,13 @@ namespace ResourceManager
 
         #endregion
 
-        #region Properties
-
-
-        #endregion
-
         #region EditValueChanged
 
         private void fmMain_Load(object sender, EventArgs e)
         {
             this.TryCatch(() =>
             {
-                var sourceEnumDict = SourceEnumExtension.GetSourceEnumDict();
-                this.lueSource.Properties.DataSource = SourceEnumExtension.GetSourceEnumDict();
-                this.lueSource.EditValue = sourceEnumDict.FirstOrDefault().Key;
-
-                this.bePath.EditValue = this._resourceManager.ProjectPath;
+                this._presenter.Show();
             });
         }
 
@@ -135,8 +166,7 @@ namespace ResourceManager
         {
             this.TryCatch(() =>
             {
-                this._resourceManager.CurrentSourceEnum = (SourceEnum)this.lueSource.EditValue;
-                this.RefreshLibraries();
+                this._presenter.SelectedSourceChange();
             });
         }
 
@@ -144,21 +174,8 @@ namespace ResourceManager
         {
             this.TryCatch(() =>
             {
-                this._resourceManager.ProjectPath = this.bePath.EditValue?.ToString();
-                this.RefreshLibraries();
+                this._presenter.SelectedPathChange();
             });
-        }
-
-        /// <summary>
-        /// Обновление списка библиотек
-        /// </summary>
-        private void RefreshLibraries()
-        {
-            this.slueLibrary.Properties.DataSource = Directory.Exists(this._resourceManager.LibraryFullPath)
-                ? this._resourceManager.GetLibraryList()
-                : null;
-
-            this.slueLibrary.EditValue = null;
         }
 
         private void bePath_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -170,7 +187,7 @@ namespace ResourceManager
                 if (folderBrowserDialog.ShowDialog() != DialogResult.OK)
                     return;
 
-                this.bePath.EditValue = folderBrowserDialog.SelectedPath;
+                this._presenter.SelectedPathChange(); ;
             });
         }
 
@@ -178,11 +195,7 @@ namespace ResourceManager
         {
             this.TryCatch(() =>
             {
-                this.slueResource.Properties.DataSource = this.SelectedLibrary == null
-                    ? null
-                    : this._resourceManager.GetResourceList(this.SelectedLibrary);
-
-                this.slueResource.EditValue = null;
+                this._presenter.SelectedPathChange();
             });
         }
 
@@ -190,8 +203,7 @@ namespace ResourceManager
         {
             this.TryCatch(() =>
             {
-                this._resourceItemList = this._resourceManager.GetResourceItemlist(this.SelectedResource).ToList();
-                this.gcResourceItems.DataSource = this._resourceItemList;
+                this._presenter.SelectedResourceChange();
             });
         }
 
@@ -222,49 +234,21 @@ namespace ResourceManager
                         return;
                     }
 
-                    this._resourceManager.CreateBackup(this.SelectedLibrary);
+                    this._presenter.CreateBackup();
                 }
 
-                this._resourceManager.SaveChanges(this.SelectedResource, this._resourceItemList);
+                this._presenter.SaveChanges();
 
                 this.ShowInformationMessage(ProjectResource.SuccessSave);
 
-                this.RefreshAfterSave();
             });
-        }
-
-        /// <summary>
-        /// Обновление данных после сохранения
-        /// Требуется для освобождения ресурсов библиотеки, чтобы продолжить работать с утилитой
-        /// </summary>
-        private void RefreshAfterSave()
-        {
-            this._resourceManager = new ResourceManager();
-
-            var rowHandle = this.gvResourceItems.FocusedRowHandle;
-            var source = this.SelectedSourceEnum;
-            var library = this.SelectedLibrary;
-            var resource = this.SelectedResource;
-
-            this.lueSource.EditValue = (int)source;
-
-            this.slueLibrary.Properties.DataSource = this._resourceManager.GetLibraryList();
-            this.slueLibrary.EditValue = library;
-
-            this.slueResource.Properties.DataSource = this._resourceManager.GetResourceList(library);
-            this.slueResource.EditValue = resource;
-
-            this._resourceItemList = this._resourceManager.GetResourceItemlist(resource).ToList();
-            this.gcResourceItems.DataSource = this._resourceItemList;
-            this.gvResourceItems.FocusedRowHandle = rowHandle;
         }
 
         private void fmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.TryCatch(() =>
             {
-                //Сохраняем настройки
-                Settings.Default.Save();
+                this._presenter.Close();
             });
         }
 

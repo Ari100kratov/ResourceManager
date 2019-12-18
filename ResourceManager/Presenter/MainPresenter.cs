@@ -3,13 +3,14 @@ using ResourceManager.Model;
 using ResourceManager.View;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ResourceManager.Presenter
 {
-    public class MainPresenter
+    public class MainPresenter : IMainPresenter
     {
         private readonly IMainView _view;
         private readonly IResourceManager _resourceManager;
@@ -17,56 +18,71 @@ namespace ResourceManager.Presenter
         public MainPresenter(IMainView view, IResourceManager resourceManager)
         {
             this._view = view;
-            view.Presenter = this;
             this._resourceManager = resourceManager;
-
-            this._view.SelectedLibraryChanged += _view_SelectedLibraryChanged;
-            this._view.SelectedResourceChanged += _view_SelectedResourceChanged;
-            this._view.SelectedSourceEnumChanged += _view_SelectedSourceEnumChanged;
-            this._view.SaveChanges += _view_SaveChanges;
         }
 
-        private void _view_SaveChanges(object sender, EventArgs e)
+
+        public void SelectedLibraryChange()
         {
-            throw new NotImplementedException();
+            this._view.ResourceList = this._view.SelectedLibrary != null
+                    ? this._resourceManager.GetResourceList(this._view.SelectedLibrary).ToList()
+                    : null;
+
+            this._view.SelectedResource = null;
         }
 
-        private void _view_SelectedSourceEnumChanged(object sender, EventArgs e)
+        public void SelectedResourceChange()
         {
-            throw new NotImplementedException();
+            this._view.ResourceItemList = this._resourceManager
+                .GetResourceItemlist(this._view.SelectedResource).ToList();
         }
 
-        private void _view_SelectedResourceChanged(object sender, EventArgs e)
+        public void SelectedPathChange()
         {
-            throw new NotImplementedException();
+            this._resourceManager.ProjectPath = this._view.SelectedPath;
+            this.RefreshLibraries();
         }
 
-        private void _view_SelectedLibraryChanged(object sender, EventArgs e)
+        public void SelectedSourceChange()
         {
-            throw new NotImplementedException();
+            this._resourceManager.CurrentSourceEnum = this._view.SelectedSourceEnum;
+            this.RefreshLibraries();
+        }
+
+        public void SaveChanges()
+        {
+            this._resourceManager.SaveChanges(this._view.SelectedResource, this._view.ResourceItemList);
+        }
+
+        public void CreateBackup()
+        {
+            this._resourceManager.CreateBackup(this._view.SelectedLibrary);
+        }
+
+        public void Show()
+        {
+            var sourceEnumDict = SourceEnumExtension.GetSourceEnumDict();
+            this._view.SourceEnumDict = SourceEnumExtension.GetSourceEnumDict();
+            this._view.SelectedSourceEnum = (SourceEnum)sourceEnumDict.FirstOrDefault().Key;
+
+            this._view.SelectedPath = this._resourceManager.ProjectPath;
+        }
+
+        public void Close()
+        {
+            Settings.Default.Save();
         }
 
         /// <summary>
-        /// Список библиотек ресурсов
+        /// Обновление списка библиотек
         /// </summary>
-        public List<string> LibraryList = new List<string>();
+        private void RefreshLibraries()
+        {
+            this._view.LibraryList = Directory.Exists(this._resourceManager.LibraryFullPath)
+                ? this._resourceManager.GetLibraryList().ToList()
+                : null;
 
-        /// <summary>
-        /// Список ресурсов выбранной библиотеки
-        /// </summary>
-        public List<string> ResourceList = new List<string>();
-
-        /// <summary>
-        /// Список элементов выбранного ресурса
-        /// </summary>
-        public List<ResourceItem> ResourceItemList = new List<ResourceItem>();
-
-
-        public string SelectedLibrary;
-
-        public string SelectedResource;
-
-        public SourceEnum SelectedSourceEnum;
-
+            this._view.SelectedLibrary = null;
+        }
     }
 }

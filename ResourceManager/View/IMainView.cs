@@ -11,22 +11,21 @@ namespace ResourceManager.View
 {
     public interface IMainView
     {
-        MainPresenter Presenter { set; }
-
         string SelectedLibrary { get; set; }
 
         string SelectedResource { get; set; }
+
+        string SelectedPath { get; set; }
 
         SourceEnum SelectedSourceEnum { get; set; }
 
         IList<ResourceItem> ResourceItemList { get; set; }
 
-        event EventHandler SelectedLibraryChanged;
+        IList<string> LibraryList { get; set; }
 
-        event EventHandler SelectedResourceChanged;
+        IList<string> ResourceList { get; set; }
 
-        event EventHandler SelectedSourceEnumChanged;
+        Dictionary<int, string> SourceEnumDict { get; set; }
 
-        event EventHandler SaveChanges; 
     }
 }
