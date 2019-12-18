@@ -1,20 +1,31 @@
 ﻿using ResourceManager.Enums;
 using ResourceManager.Model;
 using ResourceManager.View;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourceManager.Presenter
 {
+    /// <summary>
+    ///  Представление основной формы
+    /// </summary>
     public class MainPresenter : IMainPresenter
     {
+        /// <summary>
+        /// Экземпляр доступа к форме
+        /// </summary>
         private readonly IMainView _view;
+
+        /// <summary>
+        ///  Экземпляр доступа к менеджеру ресурсов
+        /// </summary>
         private readonly IResourceManager _resourceManager;
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="resourceManager"></param>
         public MainPresenter(IMainView view, IResourceManager resourceManager)
         {
             this._view = view;
