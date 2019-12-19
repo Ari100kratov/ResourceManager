@@ -52,9 +52,23 @@ namespace ResourceManager.Enums
                     return ProjectResource.SourceEnumExtension_ToLocalString_Server;
 
                 default:
-                    return "";
+                    return string.Empty;
             }
+        }
 
+        public static string ToPathString(this SourceEnum source)
+        {
+            switch (source)
+            {
+                case SourceEnum.Client:
+                    return Settings.Default.ResourceClientDefaultPath;
+
+                case SourceEnum.Server:
+                    return Settings.Default.ResourceServerDefaultPath;
+
+                default:
+                    return string.Empty;
+            }
         }
     }
 

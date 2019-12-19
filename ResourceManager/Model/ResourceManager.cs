@@ -17,14 +17,9 @@ namespace ResourceManager.Model
         #region Const
 
         /// <summary>
-        /// Путь к ресурсам клиентской части без локализации
+        /// Путь к проекту по умолчанию
         /// </summary>
-        private readonly string RESOURCE_CLIENT_DEFAULT_PATH = Settings.Default.ResourceClientDefaultPath;
-
-        /// <summary>
-        /// Путь к ресурсам серверной части без локализации
-        /// </summary>
-        private readonly string RESOURCE_SERVER_DEFAULT_PATH = Settings.Default.ResourceServerDefaultPath;
+        private readonly string PROJECT_DEFAULT_PATH = Settings.Default.ProjectDefaultPath;
 
         #endregion
 
@@ -40,12 +35,13 @@ namespace ResourceManager.Model
         #region Properties
 
         /// <summary>
-        /// Путь к библиотеке ресурсов с учетом локализации
+        /// Полный путь к библиотеке ресурсов
         /// </summary>
-        public string LibraryFullPath => Path.Combine(this.ProjectPath
-            , this.CurrentSourceEnum == SourceEnum.Client
-            ? this.RESOURCE_CLIENT_DEFAULT_PATH
-            : this.RESOURCE_SERVER_DEFAULT_PATH
+        public string LibraryFullPath => Path.Combine
+            (string.IsNullOrWhiteSpace(this.ProjectPath)
+            ? this.PROJECT_DEFAULT_PATH
+            : this.ProjectPath
+            , this.CurrentSourceEnum.ToPathString()
             , this.Language);
 
         /// <summary>
@@ -55,15 +51,11 @@ namespace ResourceManager.Model
         {
             get
             {
-                //TODO: Переделать, чтобы пользователь мог положить в папку с программой - тогда берем дефолтный путь
                 return string.IsNullOrWhiteSpace(Settings.Default.ProjectPath)
-                    ? "C:\\industry"
+                    ? Settings.Default.ProjectDefaultPath
                     : Settings.Default.ProjectPath;
             }
-            set
-            {
-                Settings.Default.ProjectPath = Path.Combine(value);
-            }
+            set => Settings.Default.ProjectPath = Path.Combine(value);
         }
 
         /// <summary>
@@ -73,7 +65,6 @@ namespace ResourceManager.Model
         {
             get
             {
-                //TODO: Переделать при необходимости локализации утилиты
                 return string.IsNullOrWhiteSpace(Settings.Default.Language)
                     ? "ru"
                     : Settings.Default.Language;
@@ -89,24 +80,7 @@ namespace ResourceManager.Model
         /// </summary>
         public SourceEnum CurrentSourceEnum { get; set; }
 
-        #endregion
-
-        #region Lists
-
-        /// <summary>
-        /// Список библиотек ресурсов
-        /// </summary>
-        private List<string> _librarylist = new List<string>();
-
-        /// <summary>
-        /// Список ресурсов выбранной библиотеки
-        /// </summary>
-        private List<string> _resourceList = new List<string>();
-
-        /// <summary>
-        /// Список элементов выбранного ресурса
-        /// </summary>
-        private List<ResourceItem> _resourceItemList = new List<ResourceItem>();
+        public LanguageEnum CurrentLanguageEnum { get; set; }
 
         #endregion
 
@@ -118,9 +92,11 @@ namespace ResourceManager.Model
         /// <returns></returns>
         public IEnumerable<string> GetLibraryList()
         {
-            this.FillLibraryList();
+            if (!Directory.Exists(this.LibraryFullPath))
+                return new List<string>();
 
-            return this._librarylist;
+            return Directory.GetFiles(this.LibraryFullPath)
+                .Where(x => !x.Contains("DevExpress")).ToList();
         }
 
         /// <summary>
@@ -131,9 +107,11 @@ namespace ResourceManager.Model
         public IEnumerable<string> GetResourceList(string libraryPath)
         {
             this.FillAssemblyModule(libraryPath);
-            this.FillResourceList();
 
-            return this._resourceList;
+            if (this._assemblyModule == null)
+                return new List<string>();
+
+            return this._assemblyModule.MainModule.Resources.Select(x => x.Name).ToList();
         }
 
         /// <summary>
@@ -143,29 +121,32 @@ namespace ResourceManager.Model
         /// <returns></returns>
         public IEnumerable<ResourceItem> GetResourceItemlist(string resourceName)
         {
-            this.FillResourceItemList(resourceName);
+            var resourceItemList = new List<ResourceItem>();
 
-            return this._resourceItemList;
+            if (string.IsNullOrWhiteSpace(resourceName))
+                return resourceItemList;
+
+            //Получаем ресурс
+            var resource = this._assemblyModule?.MainModule?.Resources.FirstOrDefault(x => x.Name.Equals(resourceName));
+
+            if (resource == null)
+                return resourceItemList;
+
+            var resourceStream = (resource as EmbeddedResource).GetResourceStream();
+            var resourceReader = new ResourceReader(resourceStream);
+
+            foreach (DictionaryEntry dictEntry in resourceReader)
+            {
+                var resourceItem = new ResourceItem(dictEntry.Key.ToString(), dictEntry.Value.ToString());
+                resourceItemList.Add(resourceItem);
+            }
+
+            return resourceItemList;
         }
 
         #endregion
 
-        #region FillList
-
-        /// <summary>
-        /// Заполнение списка библиотек
-        /// </summary>
-        /// <returns></returns>
-        private void FillLibraryList()
-        {
-            this._librarylist?.Clear();
-
-            if (!Directory.Exists(this.LibraryFullPath))
-                return;
-
-            this._librarylist = Directory.GetFiles(this.LibraryFullPath)
-                .Where(x => !x.Contains("DevExpress")).ToList();
-        }
+        #region Fill Assembly
 
         /// <summary>
         /// Заполнение модуля сборки
@@ -176,77 +157,16 @@ namespace ResourceManager.Model
             //Освобождаем ресурсы перед заполнением
             this._assemblyModule?.Dispose();
 
-            if (libraryPath == null || string.IsNullOrWhiteSpace(libraryPath))
+            if (string.IsNullOrWhiteSpace(libraryPath))
                 return;
 
-            //Заполняем ресурсы библиотеке
+            //Заполняем ресурсы библиотеки
             this._assemblyModule = AssemblyDefinition.ReadAssembly(libraryPath, new ReaderParameters { ReadWrite = true });
-        }
-
-        /// <summary>
-        /// Заполнение списка ресурсов
-        /// </summary>
-        private void FillResourceList()
-        {
-            this._resourceList?.Clear();
-
-            if (this._assemblyModule == null)
-                return;
-
-            this._resourceList = this._assemblyModule.MainModule.Resources.Select(x => x.Name).ToList();
-        }
-
-        /// <summary>
-        /// Заполнение списка элементов ресурса
-        /// </summary>
-        /// <param name="resourceName">Наименование выбранного ресурса </param>
-        private void FillResourceItemList(string resourceName)
-        {
-            this._resourceItemList?.Clear();
-
-            if (resourceName == null || string.IsNullOrWhiteSpace(resourceName))
-                return;
-
-            //Получаем ресурс
-            var resource = this._assemblyModule?.MainModule?.Resources.FirstOrDefault(x => x.Name.Equals(resourceName));
-
-            if (resource == null)
-                return;
-
-            var resourceStream = (resource as EmbeddedResource).GetResourceStream();
-            var resourceReader = new ResourceReader(resourceStream);
-
-            foreach (DictionaryEntry dictEntry in resourceReader)
-            {
-                var resourceItem = new ResourceItem(dictEntry.Key.ToString(), dictEntry.Value.ToString());
-                this._resourceItemList.Add(resourceItem);
-            }
         }
 
         #endregion
 
         #region Save
-
-        /// <summary>
-        /// Резервное копирование данных
-        /// <param name="libraryPath">Путь к библиотеке ресурсов включая наименование файла</param>
-        /// </summary>
-        public void CreateBackup(string libraryPath)
-        {
-            if (!File.Exists(libraryPath))
-                return;
-
-            var saveFileDialog = new SaveFileDialog
-            {
-                Title = ProjectResource.CreateBackup_Dialog_Header,
-                FileName = Path.GetFileName(libraryPath)
-            };
-
-            if (saveFileDialog.ShowDialog() != DialogResult.OK)
-                return;
-
-            File.Copy(libraryPath, saveFileDialog.FileName);
-        }
 
         /// <summary>
         /// Генерация измененного ресурса
@@ -265,7 +185,7 @@ namespace ResourceManager.Model
             {
                 foreach (var resourceItem in resourceItemList)
                 {
-                    var value = string.IsNullOrEmpty(resourceItem.NewValue)
+                    var value = string.IsNullOrWhiteSpace(resourceItem.NewValue)
                         ? resourceItem.CurrentValue
                         : resourceItem.NewValue;
 

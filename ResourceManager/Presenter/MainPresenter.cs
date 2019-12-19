@@ -119,5 +119,26 @@ namespace ResourceManager.Presenter
 
             this._view.SelectedLibrary = string.Empty;
         }
+
+        /// <summary>
+        /// Резервное копирование данных
+        /// <param name="libraryPath">Путь к библиотеке ресурсов включая наименование файла</param>
+        /// </summary>
+        public void CreateBackup(string libraryPath)
+        {
+            if (!File.Exists(libraryPath))
+                return;
+
+            var saveFileDialog = new SaveFileDialog
+            {
+                Title = ProjectResource.CreateBackup_Dialog_Header,
+                FileName = Path.GetFileName(libraryPath)
+            };
+
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            File.Copy(libraryPath, saveFileDialog.FileName);
+        }
     }
 }

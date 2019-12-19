@@ -14,5 +14,8 @@
     <Setting Name="ResourceServerDefaultPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">serverui\</Value>
     </Setting>
+    <Setting Name="ProjectDefaultPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\industry</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

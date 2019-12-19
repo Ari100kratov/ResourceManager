@@ -48,6 +48,7 @@
             this.lciSave = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcMain = new DevExpress.XtraLayout.LayoutControl();
+            this.lueLanguge = new DevExpress.XtraEditors.LookUpEdit();
             this.lueSource = new DevExpress.XtraEditors.LookUpEdit();
             this.slueResource = new DevExpress.XtraEditors.SearchLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -59,6 +60,7 @@
             this.lciLibrary = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciResource = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciSource = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLanguage = new DevExpress.XtraLayout.LayoutControlItem();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.lcHeader)).BeginInit();
             this.lcHeader.SuspendLayout();
@@ -77,6 +79,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcMain)).BeginInit();
             this.lcMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lueLanguge.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lueSource.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slueResource.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -88,6 +91,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.lciLibrary)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciResource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLanguage)).BeginInit();
             this.SuspendLayout();
             // 
             // lcHeader
@@ -224,7 +228,7 @@
             this.emptySpaceItem1});
             this.lcgGridView.Location = new System.Drawing.Point(0, 0);
             this.lcgGridView.Name = "Root";
-            this.lcgGridView.Size = new System.Drawing.Size(734, 431);
+            this.lcgGridView.Size = new System.Drawing.Size(734, 301);
             this.lcgGridView.TextVisible = false;
             // 
             // lciResourceItems
@@ -232,14 +236,14 @@
             this.lciResourceItems.Control = this.gcResourceItems;
             this.lciResourceItems.Location = new System.Drawing.Point(0, 0);
             this.lciResourceItems.Name = "lciResourceItems";
-            this.lciResourceItems.Size = new System.Drawing.Size(714, 385);
+            this.lciResourceItems.Size = new System.Drawing.Size(714, 255);
             this.lciResourceItems.TextSize = new System.Drawing.Size(0, 0);
             this.lciResourceItems.TextVisible = false;
             // 
             // lciSave
             // 
             this.lciSave.Control = this.sbSave;
-            this.lciSave.Location = new System.Drawing.Point(611, 385);
+            this.lciSave.Location = new System.Drawing.Point(611, 255);
             this.lciSave.MaxSize = new System.Drawing.Size(103, 26);
             this.lciSave.MinSize = new System.Drawing.Size(103, 26);
             this.lciSave.Name = "lciSave";
@@ -251,7 +255,7 @@
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 385);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 255);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(611, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -259,6 +263,7 @@
             // lcMain
             // 
             resources.ApplyResources(this.lcMain, "lcMain");
+            this.lcMain.Controls.Add(this.lueLanguge);
             this.lcMain.Controls.Add(this.lueSource);
             this.lcMain.Controls.Add(this.slueResource);
             this.lcMain.Controls.Add(this.slueLibrary);
@@ -266,6 +271,14 @@
             this.lcMain.Name = "lcMain";
             this.lcMain.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(712, 69, 250, 350);
             this.lcMain.Root = this.lcgMain;
+            // 
+            // lueLanguge
+            // 
+            resources.ApplyResources(this.lueLanguge, "lueLanguge");
+            this.lueLanguge.Name = "lueLanguge";
+            this.lueLanguge.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("lookUpEdit1.Properties.Buttons"))))});
+            this.lueLanguge.StyleController = this.lcMain;
             // 
             // lueSource
             // 
@@ -341,16 +354,17 @@
             this.lciPath,
             this.lciLibrary,
             this.lciResource,
-            this.lciSource});
+            this.lciSource,
+            this.lciLanguage});
             this.lcgMain.Location = new System.Drawing.Point(0, 0);
             this.lcgMain.Name = "Root";
-            this.lcgMain.Size = new System.Drawing.Size(734, 118);
+            this.lcgMain.Size = new System.Drawing.Size(734, 142);
             this.lcgMain.TextVisible = false;
             // 
             // lciPath
             // 
             this.lciPath.Control = this.bePath;
-            this.lciPath.Location = new System.Drawing.Point(0, 24);
+            this.lciPath.Location = new System.Drawing.Point(0, 48);
             this.lciPath.Name = "lciPath";
             this.lciPath.Size = new System.Drawing.Size(714, 24);
             resources.ApplyResources(this.lciPath, "lciPath");
@@ -359,7 +373,7 @@
             // lciLibrary
             // 
             this.lciLibrary.Control = this.slueLibrary;
-            this.lciLibrary.Location = new System.Drawing.Point(0, 48);
+            this.lciLibrary.Location = new System.Drawing.Point(0, 72);
             this.lciLibrary.Name = "lciLibrary";
             this.lciLibrary.Size = new System.Drawing.Size(714, 24);
             resources.ApplyResources(this.lciLibrary, "lciLibrary");
@@ -368,7 +382,7 @@
             // lciResource
             // 
             this.lciResource.Control = this.slueResource;
-            this.lciResource.Location = new System.Drawing.Point(0, 72);
+            this.lciResource.Location = new System.Drawing.Point(0, 96);
             this.lciResource.Name = "lciResource";
             this.lciResource.Size = new System.Drawing.Size(714, 26);
             resources.ApplyResources(this.lciResource, "lciResource");
@@ -377,11 +391,20 @@
             // lciSource
             // 
             this.lciSource.Control = this.lueSource;
-            this.lciSource.Location = new System.Drawing.Point(0, 0);
+            this.lciSource.Location = new System.Drawing.Point(0, 24);
             this.lciSource.Name = "lciSource";
             this.lciSource.Size = new System.Drawing.Size(714, 24);
             resources.ApplyResources(this.lciSource, "lciSource");
             this.lciSource.TextSize = new System.Drawing.Size(79, 13);
+            // 
+            // lciLanguage
+            // 
+            this.lciLanguage.Control = this.lueLanguge;
+            this.lciLanguage.Location = new System.Drawing.Point(0, 0);
+            this.lciLanguage.Name = "lciLanguage";
+            this.lciLanguage.Size = new System.Drawing.Size(714, 24);
+            resources.ApplyResources(this.lciLanguage, "lciLanguage");
+            this.lciLanguage.TextSize = new System.Drawing.Size(79, 13);
             // 
             // fmMain
             // 
@@ -411,6 +434,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcMain)).EndInit();
             this.lcMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.lueLanguge.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lueSource.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.slueResource.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
@@ -422,6 +446,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.lciLibrary)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciResource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLanguage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -459,5 +484,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private DevExpress.XtraEditors.LookUpEdit lueSource;
         private DevExpress.XtraLayout.LayoutControlItem lciSource;
+        private DevExpress.XtraEditors.LookUpEdit lueLanguge;
+        private DevExpress.XtraLayout.LayoutControlItem lciLanguage;
     }
 }

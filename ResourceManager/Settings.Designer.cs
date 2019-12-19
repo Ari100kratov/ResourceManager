@@ -64,5 +64,14 @@ namespace ResourceManager {
                 return ((string)(this["ResourceServerDefaultPath"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\industry")]
+        public string ProjectDefaultPath {
+            get {
+                return ((string)(this["ProjectDefaultPath"]));
+            }
+        }
     }
 }

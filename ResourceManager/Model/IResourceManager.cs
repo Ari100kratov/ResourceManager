@@ -51,12 +51,6 @@ namespace ResourceManager.Model
         string LibraryFullPath { get; }
 
         /// <summary>
-        /// Резервное копирование данных
-        /// </summary>
-        /// <param name="libraryPath">Путь к библиотеке ресурсов включая наименование файла</param>
-        void CreateBackup(string libraryPath);
-
-        /// <summary>
         /// Текущий источник ресурсов
         /// </summary>
         SourceEnum CurrentSourceEnum { get; set; }
