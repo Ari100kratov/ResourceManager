@@ -285,6 +285,8 @@
             this.slueResource.Name = "slueResource";
             this.slueResource.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("slueResource.Properties.Buttons"))))});
+            this.slueResource.Properties.NullValuePrompt = resources.GetString("slueResource.Properties.NullValuePrompt");
+            this.slueResource.Properties.NullValuePromptShowForEmptyValue = ((bool)(resources.GetObject("slueResource.Properties.NullValuePromptShowForEmptyValue")));
             this.slueResource.Properties.PopupFormSize = new System.Drawing.Size(650, 0);
             this.slueResource.Properties.View = this.gridView1;
             this.slueResource.StyleController = this.lcMain;
@@ -304,6 +306,8 @@
             this.slueLibrary.Name = "slueLibrary";
             this.slueLibrary.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("slueLibrary.Properties.Buttons"))))});
+            this.slueLibrary.Properties.NullValuePrompt = resources.GetString("slueLibrary.Properties.NullValuePrompt");
+            this.slueLibrary.Properties.NullValuePromptShowForEmptyValue = ((bool)(resources.GetObject("slueLibrary.Properties.NullValuePromptShowForEmptyValue")));
             this.slueLibrary.Properties.PopupFormSize = new System.Drawing.Size(650, 0);
             this.slueLibrary.Properties.View = this.searchLookUpEdit1View;
             this.slueLibrary.StyleController = this.lcMain;
@@ -323,6 +327,8 @@
             this.bePath.Name = "bePath";
             this.bePath.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.bePath.Properties.NullValuePrompt = resources.GetString("bePath.Properties.NullValuePrompt");
+            this.bePath.Properties.NullValuePromptShowForEmptyValue = ((bool)(resources.GetObject("bePath.Properties.NullValuePromptShowForEmptyValue")));
             this.bePath.StyleController = this.lcMain;
             this.bePath.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bePath_ButtonClick);
             this.bePath.EditValueChanged += new System.EventHandler(this.bePath_EditValueChanged);

@@ -13,54 +13,85 @@ namespace ResourceManager
 {
     public partial class fmMain : XtraForm, IMainView
     {
+        #region View
+
+        /// <summary>
+        /// Выбранная библиотека
+        /// </summary>
         public string SelectedLibrary
         {
             get => this.slueLibrary.EditValue.ToString();
             set => this.slueLibrary.EditValue = value;
         }
 
+        /// <summary>
+        /// Выбранный ресурс
+        /// </summary>
         public string SelectedResource
         {
             get => this.slueResource.EditValue.ToString();
             set => this.slueResource.EditValue = value;
         }
 
+        /// <summary>
+        /// Каталог
+        /// </summary>
         public string SelectedPath
         {
             get => this.bePath.EditValue.ToString();
             set => this.bePath.EditValue = value;
         }
 
+        /// <summary>
+        /// Выбранный ресурс
+        /// </summary>
         public SourceEnum SelectedSourceEnum
         {
             get => (SourceEnum)this.lueSource.EditValue;
-            set => this.slueResource.EditValue = (int)value;
+            set => this.lueSource.EditValue = (int)value;
         }
 
+        /// <summary>
+        /// Списокэлементов ресурса
+        /// </summary>
         public IList<ResourceItem> ResourceItemList
         {
             get => this.gcResourceItems.DataSource as List<ResourceItem>;
             set => this.gcResourceItems.DataSource = value;
         }
 
+        /// <summary>
+        /// Список библиотек
+        /// </summary>
         public IList<string> LibraryList
         {
             get => this.slueLibrary.Properties.DataSource as List<string>;
             set => this.slueLibrary.Properties.DataSource = value;
         }
 
+        /// <summary>
+        /// Список ресурсов
+        /// </summary>
         public IList<string> ResourceList
         {
             get => this.slueResource.Properties.DataSource as List<string>;
             set => this.slueResource.Properties.DataSource = value;
         }
 
+        /// <summary>
+        /// Словарь источников
+        /// </summary>
         public Dictionary<int, string> SourceEnumDict
         {
             get => this.lueSource.Properties.DataSource as Dictionary<int, string>;
             set => this.lueSource.Properties.DataSource = value;
         }
 
+        #endregion
+
+        /// <summary>
+        /// Экземпляр представления
+        /// </summary>
         private readonly IMainPresenter _presenter;
 
         #region .ctor
@@ -195,7 +226,7 @@ namespace ResourceManager
         {
             this.TryCatch(() =>
             {
-                this._presenter.SelectedPathChange();
+                this._presenter.SelectedLibraryChange();
             });
         }
 

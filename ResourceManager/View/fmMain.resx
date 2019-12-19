@@ -399,6 +399,12 @@
   <data name="slueResource.Properties.Buttons" type="DevExpress.XtraEditors.Controls.ButtonPredefines, DevExpress.Utils.v16.1">
     <value>Combo</value>
   </data>
+  <data name="slueResource.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Выберите ресурс</value>
+  </data>
+  <data name="slueResource.Properties.NullValuePromptShowForEmptyValue" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="slueResource.Size" type="System.Drawing.Size, System.Drawing">
     <value>628, 20</value>
   </data>
@@ -423,6 +429,12 @@
   <data name="slueLibrary.Properties.Buttons" type="DevExpress.XtraEditors.Controls.ButtonPredefines, DevExpress.Utils.v16.1">
     <value>Combo</value>
   </data>
+  <data name="slueLibrary.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Выберите библиотеку ресурсов</value>
+  </data>
+  <data name="slueLibrary.Properties.NullValuePromptShowForEmptyValue" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="slueLibrary.Size" type="System.Drawing.Size, System.Drawing">
     <value>628, 20</value>
   </data>
@@ -443,6 +455,12 @@
   </data>
   <data name="bePath.Location" type="System.Drawing.Point, System.Drawing">
     <value>94, 36</value>
+  </data>
+  <data name="bePath.Properties.NullValuePrompt" xml:space="preserve">
+    <value>C:\industry</value>
+  </data>
+  <data name="bePath.Properties.NullValuePromptShowForEmptyValue" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="bePath.Size" type="System.Drawing.Size, System.Drawing">
     <value>628, 20</value>
