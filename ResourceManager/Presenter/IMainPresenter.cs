@@ -12,6 +12,11 @@ namespace ResourceManager.Presenter
     public interface IMainPresenter
     {
         /// <summary>
+        ///  Событие изменения выбранной локализации
+        /// </summary>
+        void SelectedLanguageChange();
+
+        /// <summary>
         ///  Событие изменения выбранной библиотеки
         /// </summary>
         void SelectedLibraryChange();

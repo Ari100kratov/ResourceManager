@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Resources;
-using System.Windows.Forms;
 using Mono.Cecil;
 using ResourceManager.Enums;
 
@@ -14,73 +13,37 @@ namespace ResourceManager.Model
     /// </summary>
     public class ResourceManager : IResourceManager
     {
-        #region Const
-
-        /// <summary>
-        /// Путь к проекту по умолчанию
-        /// </summary>
-        private readonly string PROJECT_DEFAULT_PATH = Settings.Default.ProjectDefaultPath;
-
-        #endregion
-
-        #region Fields
+        #region Vaeiables
 
         /// <summary>
         /// Модуль сборки
         /// </summary>
         private AssemblyDefinition _assemblyModule;
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Полный путь к библиотеке ресурсов
         /// </summary>
-        public string LibraryFullPath => Path.Combine
-            (string.IsNullOrWhiteSpace(this.ProjectPath)
-            ? this.PROJECT_DEFAULT_PATH
-            : this.ProjectPath
+        private string LibraryFullPath => Path.Combine
+            (this.CurrentProjectPath
             , this.CurrentSourceEnum.ToPathString()
-            , this.Language);
+            , this.CurrentLanguageEnum.ToPathString());
 
         /// <summary>
         /// Путь к проекту
         /// </summary>
-        public string ProjectPath
-        {
-            get
-            {
-                return string.IsNullOrWhiteSpace(Settings.Default.ProjectPath)
+        private string CurrentProjectPath => string.IsNullOrWhiteSpace(Settings.Default.ProjectPath)
                     ? Settings.Default.ProjectDefaultPath
                     : Settings.Default.ProjectPath;
-            }
-            set => Settings.Default.ProjectPath = Path.Combine(value);
-        }
-
-        /// <summary>
-        /// Локализация
-        /// </summary>
-        public string Language
-        {
-            get
-            {
-                return string.IsNullOrWhiteSpace(Settings.Default.Language)
-                    ? "ru"
-                    : Settings.Default.Language;
-            }
-            set
-            {
-                Settings.Default.Language = value;
-            }
-        }
 
         /// <summary>
         /// Текущий источник ресурсов
         /// </summary>
-        public SourceEnum CurrentSourceEnum { get; set; }
+        private SourceEnum CurrentSourceEnum => (SourceEnum)Settings.Default.SourceId;
 
-        public LanguageEnum CurrentLanguageEnum { get; set; }
+        /// <summary>
+        /// Текущая локализация
+        /// </summary>
+        private LanguageEnum CurrentLanguageEnum => (LanguageEnum)Settings.Default.LanguageId;
 
         #endregion
 

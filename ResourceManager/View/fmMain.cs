@@ -16,6 +16,15 @@ namespace ResourceManager
         #region View
 
         /// <summary>
+        /// Выбранная локализация
+        /// </summary>
+        public LanguageEnum SelectedLanguageEnum
+        {
+            get => (LanguageEnum)this.lueLanguge.EditValue;
+            set => this.lueLanguge.EditValue = (int)value;
+        }
+
+        /// <summary>
         /// Выбранная библиотека
         /// </summary>
         public string SelectedLibrary
@@ -52,7 +61,7 @@ namespace ResourceManager
         }
 
         /// <summary>
-        /// Списокэлементов ресурса
+        /// Список элементов ресурса
         /// </summary>
         public IList<ResourceItem> ResourceItemList
         {
@@ -85,6 +94,15 @@ namespace ResourceManager
         {
             get => this.lueSource.Properties.DataSource as Dictionary<int, string>;
             set => this.lueSource.Properties.DataSource = value;
+        }
+
+        /// <summary>
+        /// Словарь локализаций
+        /// </summary>
+        public Dictionary<int, string> LanguageEnumDict
+        {
+            get => this.lueLanguge.Properties.DataSource as Dictionary<int, string>;
+            set => this.lueLanguge.Properties.DataSource = value;
         }
 
         #endregion
@@ -284,5 +302,13 @@ namespace ResourceManager
         }
 
         #endregion
+
+        private void lueLanguge_EditValueChanged(object sender, EventArgs e)
+        {
+            this.TryCatch(() =>
+            {
+                this._presenter.SelectedLanguageChange();
+            });
+        }
     }
 }

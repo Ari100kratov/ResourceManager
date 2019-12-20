@@ -37,13 +37,13 @@ namespace ResourceManager {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Language {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LanguageId {
             get {
-                return ((string)(this["Language"]));
+                return ((int)(this["LanguageId"]));
             }
             set {
-                this["Language"] = value;
+                this["LanguageId"] = value;
             }
         }
         
@@ -71,6 +71,18 @@ namespace ResourceManager {
         public string ProjectDefaultPath {
             get {
                 return ((string)(this["ProjectDefaultPath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SourceId {
+            get {
+                return ((int)(this["SourceId"]));
+            }
+            set {
+                this["SourceId"] = value;
             }
         }
     }

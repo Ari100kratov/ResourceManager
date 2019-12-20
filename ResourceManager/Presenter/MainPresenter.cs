@@ -33,6 +33,15 @@ namespace ResourceManager.Presenter
         }
 
         /// <summary>
+        /// Событие изменения выбранной локализации
+        /// </summary>
+        public void SelectedLanguageChange()
+        {
+            Settings.Default.LanguageId = (int)this._view.SelectedLanguageEnum;
+            this.RefreshLibraries();
+        }
+
+        /// <summary>
         ///  Событие изменения выбранной библиотеки ресурсов
         /// </summary>
         public void SelectedLibraryChange()
@@ -59,7 +68,7 @@ namespace ResourceManager.Presenter
         /// </summary>
         public void SelectedPathChange()
         {
-            this._resourceManager.ProjectPath = this._view.SelectedPath;
+            Settings.Default.ProjectPath = this._view.SelectedPath;
             this.RefreshLibraries();
         }
 
@@ -68,7 +77,7 @@ namespace ResourceManager.Presenter
         /// </summary>
         public void SelectedSourceChange()
         {
-            this._resourceManager.CurrentSourceEnum = this._view.SelectedSourceEnum;
+            Settings.Default.SourceId = (int)this._view.SelectedSourceEnum;
             this.RefreshLibraries();
         }
 
@@ -85,7 +94,7 @@ namespace ResourceManager.Presenter
         /// </summary>
         public void CreateBackup()
         {
-            this._resourceManager.CreateBackup(this._view.SelectedLibrary);
+            this.CreateBackup(this._view.SelectedLibrary);
         }
 
         /// <summary>
@@ -93,11 +102,13 @@ namespace ResourceManager.Presenter
         /// </summary>
         public void Show()
         {
-            var sourceEnumDict = SourceEnumExtension.GetSourceEnumDict();
-            this._view.SourceEnumDict = SourceEnumExtension.GetSourceEnumDict();
-            this._view.SelectedSourceEnum = (SourceEnum)sourceEnumDict.FirstOrDefault().Key;
+            this._view.LanguageEnumDict = LanguageEnumExtension.GetLanguageEnumDict();
+            this._view.SelectedLanguageEnum = (LanguageEnum)Settings.Default.LanguageId;
 
-            this._view.SelectedPath = this._resourceManager.ProjectPath;
+            this._view.SourceEnumDict = SourceEnumExtension.GetSourceEnumDict();
+            this._view.SelectedSourceEnum = (SourceEnum)Settings.Default.SourceId;
+
+            this._view.SelectedPath = Settings.Default.ProjectPath;
         }
 
         /// <summary>
@@ -113,10 +124,7 @@ namespace ResourceManager.Presenter
         /// </summary>
         private void RefreshLibraries()
         {
-            this._view.LibraryList = Directory.Exists(this._resourceManager.LibraryFullPath)
-                ? this._resourceManager.GetLibraryList().ToList()
-                : null;
-
+            this._view.LibraryList = this._resourceManager.GetLibraryList().ToList();
             this._view.SelectedLibrary = string.Empty;
         }
 
@@ -126,19 +134,19 @@ namespace ResourceManager.Presenter
         /// </summary>
         public void CreateBackup(string libraryPath)
         {
-            if (!File.Exists(libraryPath))
-                return;
+            //if (!File.Exists(libraryPath))
+            //    return;
 
-            var saveFileDialog = new SaveFileDialog
-            {
-                Title = ProjectResource.CreateBackup_Dialog_Header,
-                FileName = Path.GetFileName(libraryPath)
-            };
+            //var saveFileDialog = new SaveFileDialog
+            //{
+            //    Title = ProjectResource.CreateBackup_Dialog_Header,
+            //    FileName = Path.GetFileName(libraryPath)
+            //};
 
-            if (saveFileDialog.ShowDialog() != DialogResult.OK)
-                return;
+            //if (saveFileDialog.ShowDialog() != DialogResult.OK)
+            //    return;
 
-            File.Copy(libraryPath, saveFileDialog.FileName);
+            //File.Copy(libraryPath, saveFileDialog.FileName);
         }
     }
 }

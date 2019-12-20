@@ -5,8 +5,8 @@
     <Setting Name="ProjectPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Language" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="LanguageId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="ResourceClientDefaultPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">client\</Value>
@@ -16,6 +16,9 @@
     </Setting>
     <Setting Name="ProjectDefaultPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\industry</Value>
+    </Setting>
+    <Setting Name="SourceId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

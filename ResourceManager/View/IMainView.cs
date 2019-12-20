@@ -1,11 +1,6 @@
 ﻿using ResourceManager.Enums;
 using ResourceManager.Model;
-using ResourceManager.Presenter;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourceManager.View
 {
@@ -14,6 +9,11 @@ namespace ResourceManager.View
     /// </summary>
     public interface IMainView
     {
+        /// <summary>
+        /// Выбранная локализация
+        /// </summary>
+        LanguageEnum SelectedLanguageEnum { get; set; }
+
         /// <summary>
         /// Выбранная библиотека
         /// </summary>
@@ -54,5 +54,9 @@ namespace ResourceManager.View
         /// </summary>
         Dictionary<int, string> SourceEnumDict { get; set; }
 
+        /// <summary>
+        /// Словарь локализаций
+        /// </summary>
+        Dictionary<int, string> LanguageEnumDict { get; set; }
     }
 }

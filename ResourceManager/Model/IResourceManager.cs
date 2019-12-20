@@ -34,25 +34,5 @@ namespace ResourceManager.Model
         /// <param name="resourceName">Выбранный ресурс</param>
         /// <param name="resourceItemList">Измененый список элементов ресурса</param>
         void SaveChanges(string resourceName, IEnumerable<ResourceItem> resourceItemList);
-
-        /// <summary>
-        /// Путь к проекту
-        /// </summary>
-        string ProjectPath { get; set; }
-
-        /// <summary>
-        /// Локализация
-        /// </summary>
-        string Language { get; set; }
-
-        /// <summary>
-        /// Путь к библиотеке ресурсов с учетом локализации
-        /// </summary>
-        string LibraryFullPath { get; }
-
-        /// <summary>
-        /// Текущий источник ресурсов
-        /// </summary>
-        SourceEnum CurrentSourceEnum { get; set; }
     }
 }

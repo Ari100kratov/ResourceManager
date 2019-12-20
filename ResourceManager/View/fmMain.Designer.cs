@@ -277,8 +277,11 @@
             resources.ApplyResources(this.lueLanguge, "lueLanguge");
             this.lueLanguge.Name = "lueLanguge";
             this.lueLanguge.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("lookUpEdit1.Properties.Buttons"))))});
+            new DevExpress.XtraEditors.Controls.EditorButton(((DevExpress.XtraEditors.Controls.ButtonPredefines)(resources.GetObject("lueLanguge.Properties.Buttons"))))});
+            this.lueLanguge.Properties.DisplayMember = "Value";
+            this.lueLanguge.Properties.ValueMember = "Key";
             this.lueLanguge.StyleController = this.lcMain;
+            this.lueLanguge.EditValueChanged += new System.EventHandler(this.lueLanguge_EditValueChanged);
             // 
             // lueSource
             // 
