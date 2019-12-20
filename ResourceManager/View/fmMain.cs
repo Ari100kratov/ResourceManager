@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using System.IO;
@@ -120,7 +119,7 @@ namespace ResourceManager
         public fmMain()
         {
             InitializeComponent();
-            var resourceManager = new ResourceManager.Model.ResourceManager();
+            var resourceManager = new Model.ResourceManager();
             this._presenter = new MainPresenter(this, resourceManager);
         }
 
@@ -256,6 +255,14 @@ namespace ResourceManager
             });
         }
 
+        private void lueLanguge_EditValueChanged(object sender, EventArgs e)
+        {
+            this.TryCatch(() =>
+            {
+                this._presenter.SelectedLanguageChange();
+            });
+        }
+
         #endregion
 
         #region Save
@@ -302,13 +309,5 @@ namespace ResourceManager
         }
 
         #endregion
-
-        private void lueLanguge_EditValueChanged(object sender, EventArgs e)
-        {
-            this.TryCatch(() =>
-            {
-                this._presenter.SelectedLanguageChange();
-            });
-        }
     }
 }
